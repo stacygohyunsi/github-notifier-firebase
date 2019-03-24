@@ -8,19 +8,19 @@ const serviceAccount = require('./creds.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://notifier-5de7f.firebaseio.com'
+  databaseURL: config.firebase.databaseURL
 });
 
 firebase.initializeApp(config.firebase);
 
 exports.test = functions
-  .region('asia-northeast1')
+  .region(config.firebase.region)
   .https.onRequest((request, response) => {
   response.send("test");
   });
 
 exports.savedata = functions
-  .region('asia-northeast1')
+  .region(config.firebase.region)
   .https.onRequest((req, res) => {
     var username = req.body.githubUsername;
     var registrationId = req.body.registrationId;
@@ -49,7 +49,7 @@ exports.savedata = functions
   });
 
 exports.watch = functions
-  .region('asia-northeast1')
+  .region(config.firebase.region)
   .https.onRequest((req, res) => {
     var ids = [];
     var type = events.typeof(req.body);  
